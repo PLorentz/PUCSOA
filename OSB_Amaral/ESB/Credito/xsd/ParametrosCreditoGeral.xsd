@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://pucminas.br/SN/CreditoGeral" 
+	xmlns:tns="http://pucminas.br/SN/CreditoGeral" 
+	xmlns:cab="http://pucminas.br/MC/SOA/Amaral"
+	elementFormDefault="qualified">
+	
+	<import namespace="http://pucminas.br/MC/SOA/Amaral" schemaLocation="../../../ModeloCanonico/MC/Pessoa.xsd" />
+	
+	<element name="parametrosConsultaScore">
+		<complexType>
+			<sequence>
+				<element name="pessoa" type="cab:Pessoa" />
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="resultadoConsultaScore">
+		<complexType>
+			<sequence>
+				<element name="score" type="integer" />
+			</sequence>
+		</complexType>
+	</element>
+</schema>

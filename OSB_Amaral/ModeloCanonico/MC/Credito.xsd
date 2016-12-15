@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema 
+	xmlns="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://pucminas.br/MC/SOA/Amaral" 
+	xmlns:tns="http://pucminas.br/MC/SOA/Amaral" 
+	xmlns:pes="http://pucminas.br/MC/SOA/Amaral"
+	elementFormDefault="qualified">
+	
+	<include schemaLocation="Pessoa.xsd" />
+	
+	<complexType name="Credito">
+		<sequence>
+			<element name="pessoa" type="pes:Pessoa"></element>
+			<element name="quantidadeRestricoes" type="integer"></element>
+			<element name="valorRestricao" type="decimal"></element>
+		</sequence>
+	</complexType>
+</schema>

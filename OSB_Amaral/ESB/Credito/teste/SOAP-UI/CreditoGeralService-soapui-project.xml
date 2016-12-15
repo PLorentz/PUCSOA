@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="5f25dd16-beef-4121-9cad-0218de59d501" activeEnvironment="Default" name="CreditoGeralService - Teste OSB" resourceRoot="" soapui-version="5.2.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="31d165c1-1929-4662-bbe8-512a877a3865" wsaVersion="NONE" name="CreditoGeralServiceSOAP" type="wsdl" bindingName="{http://pucminas.br/SN/CreditoGeralService/Amaral}CreditoGeralServiceSOAP" soapVersion="1_1" anonymous="optional" definition="file:/home/puc/workspace/OSB_Amaral/ESB/Credito/wsdl/CreditoGeralService.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/home/puc/workspace/OSB_Amaral/ESB/Credito/wsdl/CreditoGeralService.wsdl"><con:part><con:url>file:/home/puc/workspace/OSB_Amaral/ESB/Credito/wsdl/CreditoGeralService.wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="CreditoGeralService" targetNamespace="http://pucminas.br/SN/CreditoGeralService/Amaral" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://pucminas.br/SN/CreditoGeralService/Amaral" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:cab="http://pucminas.br/MC/SOA/Amaral" xmlns:cre="http://pucminas.br/SN/CreditoGeral" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://pucminas.br/SN/CreditoGeralService/Amaral">
+      <xsd:import namespace="http://pucminas.br/SN/CreditoGeral" schemaLocation="../xsd/ParametrosCreditoGeral.xsd"/>
+      <xsd:import namespace="http://pucminas.br/MC/SOA/Amaral" schemaLocation="../../../ModeloCanonico/MC/PucminasFault.xsd"/>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="pucminasFault">
+    <wsdl:part element="cab:pucminasFault" name="fault"/>
+  </wsdl:message>
+  <wsdl:message name="consultaScoreRequest">
+    <wsdl:part element="cre:parametrosConsultaScore" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="consultaScoreResponse">
+    <wsdl:part element="cre:resultadoConsultaScore" name="parameters"/>
+  </wsdl:message>
+  <wsdl:portType name="CreditoGeralService">
+    <wsdl:operation name="consultaScore">
+      <wsdl:input message="tns:consultaScoreRequest"/>
+      <wsdl:output message="tns:consultaScoreResponse"/>
+      <wsdl:fault name="pucminasFault" message="tns:pucminasFault"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CreditoGeralServiceSOAP" type="tns:CreditoGeralService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="consultaScore">
+      <soap:operation soapAction="http://pucminas.br/SN/CreditoGeralService/ConsultaScore"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="pucminasFault">
+        <soap:fault name="pucminasFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CreditoGeralService">
+    <wsdl:port binding="tns:CreditoGeralServiceSOAP" name="CreditoGeralServiceSOAP">
+      <soap:address location="http://pucminas.br/SOA/CreditoGeral"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>file:/home/puc/workspace/OSB_Amaral/ESB/Credito/xsd/ParametrosCreditoGeral.xsd</con:url><con:content><![CDATA[<schema targetNamespace="http://pucminas.br/SN/CreditoGeral" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://pucminas.br/SN/CreditoGeral" xmlns:cab="http://pucminas.br/MC/SOA/Amaral">
+  <import namespace="http://pucminas.br/MC/SOA/Amaral" schemaLocation="../../../ModeloCanonico/MC/Pessoa.xsd"/>
+  <element name="parametrosConsultaScore">
+    <complexType>
+      <sequence>
+        <element name="pessoa" type="cab:Pessoa"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="resultadoConsultaScore">
+    <complexType>
+      <sequence>
+        <element name="score" type="integer"/>
+      </sequence>
+    </complexType>
+  </element>
+</schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part><con:part><con:url>file:/home/puc/workspace/OSB_Amaral/ModeloCanonico/MC/Pessoa.xsd</con:url><con:content><![CDATA[<schema targetNamespace="http://pucminas.br/MC/SOA/Amaral" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://pucminas.br/MC/SOA/Amaral">
+  <complexType name="Pessoa">
+    <sequence>
+      <element name="id" type="integer"/>
+      <element name="nome" type="string"/>
+      <element name="dataNascimento" type="date"/>
+      <element name="cpf" type="string"/>
+      <element name="telefone" type="string"/>
+      <element name="celular" type="string"/>
+    </sequence>
+  </complexType>
+</schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part><con:part><con:url>file:/home/puc/workspace/OSB_Amaral/ModeloCanonico/MC/PucminasFault.xsd</con:url><con:content><![CDATA[<schema targetNamespace="http://pucminas.br/MC/SOA/Amaral" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://pucminas.br/MC/SOA/Amaral">
+  <element name="pucminasFault" type="tns:PucminasFault"/>
+  <complexType name="PucminasFault">
+    <sequence>
+      <element name="codigo" type="integer"/>
+      <element name="descricao" type="string"/>
+      <element name="detalhe" type="string"/>
+    </sequence>
+  </complexType>
+</schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://pucminas.br/SOA/CreditoGeral</con:endpoint></con:endpoints><con:operation id="5fb90fe5-3db1-46fe-a473-67d0d3d489fc" isOneWay="false" action="http://pucminas.br/SN/CreditoGeralService/ConsultaScore" name="consultaScore" bindingOperationName="consultaScore" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="aec82071-2c1a-48d1-b1ea-d8a904be2705" name="Request consultaScore OSB"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:7001/ServicosNegocio/Credito/CreditoGeralServiceSecurity</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cred="http://pucminas.br/SN/CreditoGeral" xmlns:amar="http://pucminas.br/MC/SOA/Amaral">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <cred:parametrosConsultaScore>
+         <cred:pessoa>
+            <amar:id>1</amar:id>
+            <amar:nome>Pedro Vinicius</amar:nome>
+            <amar:dataNascimento>1990-08-10</amar:dataNascimento>
+            <amar:cpf>123.456.321-12</amar:cpf>
+            <amar:telefone>3136948694</amar:telefone>
+            <amar:celular>3190785435</amar:celular>
+         </cred:pessoa>
+      </cred:parametrosConsultaScore>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://pucminas.br/SN/CreditoGeralService/ConsultaScore"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/></con:soapui-project>

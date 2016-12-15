@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:resultadoConsultaScore xmlns:tns="http://pucminas.br/SN/CreditoGeral" xmlns:tns1="http://pucminas.br/MC/SOA/Amaral" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pucminas.br/SN/CreditoGeral ParametrosCreditoGeral.xsd ">
+  <tns:score>0</tns:score>
+</tns:resultadoConsultaScore>

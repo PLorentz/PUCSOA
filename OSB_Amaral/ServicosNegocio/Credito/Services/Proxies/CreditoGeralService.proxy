@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-fragment xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con4="http://www.bea.com/wli/sb/stages/logging/config">
+  <ser:coreEntry isProxy="true" isEnabled="true">
+    <ser:binding type="SOAP" isSoap12="false" xsi:type="con:SoapBindingType" xmlns:con="http://www.bea.com/wli/sb/services/bindings/config">
+      <con:wsdl ref="OSB_Amaral/ESB/Credito/wsdl/CreditoGeralService"/>
+      <con:port>
+        <con:name>CreditoGeralServiceSOAP</con:name>
+        <con:namespace>http://pucminas.br/SN/CreditoGeralService/Amaral</con:namespace>
+      </con:port>
+      <con:selector type="SOAP body"/>
+    </ser:binding>
+    <ser:monitoring isEnabled="false">
+      <ser:aggregationInterval>10</ser:aggregationInterval>
+      <ser:pipelineMonitoringLevel>Pipeline</ser:pipelineMonitoringLevel>
+    </ser:monitoring>
+    <ser:reporting>true</ser:reporting>
+    <ser:logging isEnabled="true">
+      <ser:logLevel>debug</ser:logLevel>
+    </ser:logging>
+    <ser:sla-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:sla-alerting>
+    <ser:pipeline-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:pipeline-alerting>
+    <ser:ws-policy>
+      <ser:binding-mode>wsdl-policy-attachments</ser:binding-mode>
+    </ser:ws-policy>
+  </ser:coreEntry>
+  <ser:endpointConfig>
+    <tran:provider-id>local</tran:provider-id>
+    <tran:inbound>true</tran:inbound>
+    <tran:inbound-properties/>
+    <tran:all-headers>true</tran:all-headers>
+  </ser:endpointConfig>
+  <ser:router>
+    <con:pipeline type="request" name="PipelinePairOperacaoInexistente_request">
+      <con:stage name="stageOperacaoInexistente">
+        <con:context/>
+        <con:actions>
+          <con1:Error>
+            <con2:id>_ActionId-3104466917406858288--8a56954.15898abd001.-7f5d</con2:id>
+            <con1:errCode>001</con1:errCode>
+            <con1:message>Operaçao inexistente.</con1:message>
+          </con1:Error>
+        </con:actions>
+      </con:stage>
+    </con:pipeline>
+    <con:pipeline type="response" name="PipelinePairOperacaoInexistente_response"/>
+    <con:pipeline type="request" name="PipelinePairConsultaScore_request">
+      <con:stage name="stageValidacao">
+        <con:context>
+          <con2:varNsDecl namespace="http://pucminas.br/SN/CreditoGeral" prefix="cred"/>
+        </con:context>
+        <con:actions>
+          <con1:validate>
+            <con2:id>_ActionId-8433403218602170875-57e364a1.158ff955133.-7f51</con2:id>
+            <con1:schema ref="OSB_Amaral/ESB/Credito/xsd/ParametrosCreditoGeral"/>
+            <con1:schemaElement xmlns:cred="http://pucminas.br/SN/CreditoGeral">cred:parametrosConsultaScore</con1:schemaElement>
+            <con1:varName>body</con1:varName>
+            <con1:location>
+              <con2:xpathText>./cred:parametrosConsultaScore</con2:xpathText>
+            </con1:location>
+          </con1:validate>
+        </con:actions>
+      </con:stage>
+      <con:stage name="stagePrincipal">
+        <con:context>
+          <con2:varNsDecl namespace="http://pucminas.br/SN/CreditoGeral" prefix="cred"/>
+        </con:context>
+        <con:actions>
+          <con1:assign varName="score">
+            <con2:id>_ActionId-7400317042251854516-32275f41.158f599ffd3.-7f27</con2:id>
+            <con1:expr>
+              <con2:xqueryText>1000</con2:xqueryText>
+            </con1:expr>
+          </con1:assign>
+          <con1:assign varName="varConsultaCreditoExternoParametro">
+            <con2:id>_ActionId-3865522565962078438-1a1a35eb.158f49aef13.-7db9</con2:id>
+            <con1:expr>
+              <con2:xqueryTransform>
+                <con2:resource ref="OSB_Amaral/ServicosNegocio/Credito/Resources/Transformations/CreditoGeralParametroToVerificaCreditoExternoParametro"/>
+                <con2:param name="parametrosConsultaScore">
+                  <con2:path>$body/cred:parametrosConsultaScore</con2:path>
+                </con2:param>
+              </con2:xqueryTransform>
+            </con1:expr>
+          </con1:assign>
+          <con1:wsCallout>
+            <con2:id>_ActionId-3865522565962078438-1a1a35eb.158f49aef13.-7e92</con2:id>
+            <con1:service xsi:type="ref:ProxyRef" ref="OSB_Amaral/ServicosNegocio/Credito/Services/Proxies/Operations/VerificaCreditoExternoService" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+            <con1:operation>verificaCreditoExterno</con1:operation>
+            <con1:request>
+              <con1:body wrapped="false">$varConsultaCreditoExternoParametro</con1:body>
+            </con1:request>
+            <con1:response>
+              <con1:body wrapped="false">varConsultaCreditoExternoResposta</con1:body>
+            </con1:response>
+            <con1:requestTransform/>
+            <con1:responseTransform/>
+          </con1:wsCallout>
+          <con1:ifThenElse>
+            <con2:comment/>
+            <con2:id>_ActionId-7400317042251854516-32275f41.158f599ffd3.-7f47</con2:id>
+            <con1:case>
+              <con1:condition>
+                <con2:xqueryText>xs:decimal($varConsultaCreditoExternoResposta//*:valorRestricao) &lt;= 400</con2:xqueryText>
+              </con1:condition>
+              <con1:actions>
+                <con4:log>
+                  <con2:id>_ActionId-8433403218602170875-57e364a1.158ff955133.-7e9f</con2:id>
+                  <con4:logLevel>debug</con4:logLevel>
+                  <con4:expr>
+                    <con2:xqueryText>"Credito externo menor ou igual a 400."</con2:xqueryText>
+                  </con4:expr>
+                </con4:log>
+                <con1:assign varName="varConsultaCreditoInternoParametro">
+                  <con2:id>_ActionId-7400317042251854516-32275f41.158f599ffd3.-7f0e</con2:id>
+                  <con1:expr>
+                    <con2:xqueryTransform>
+                      <con2:resource ref="OSB_Amaral/ServicosNegocio/Credito/Resources/Transformations/CreditoGeralParametroToVerificaCreditoInterno"/>
+                      <con2:param name="parametrosConsultaScore">
+                        <con2:path>$body/cred:parametrosConsultaScore</con2:path>
+                      </con2:param>
+                    </con2:xqueryTransform>
+                  </con1:expr>
+                </con1:assign>
+                <con1:wsCallout>
+                  <con2:id>_ActionId-7400317042251854516-32275f41.158f599ffd3.-7f0c</con2:id>
+                  <con1:service xsi:type="ref:ProxyRef" ref="OSB_Amaral/ServicosNegocio/Credito/Services/Proxies/Operations/VerificaCreditoInternoService" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                  <con1:operation>verificaCreditoInterno</con1:operation>
+                  <con1:request>
+                    <con1:body>$varConsultaCreditoInternoParametro</con1:body>
+                  </con1:request>
+                  <con1:response>
+                    <con1:body>varConsultaCreditoInternoResposta</con1:body>
+                  </con1:response>
+                  <con1:requestTransform/>
+                  <con1:responseTransform/>
+                </con1:wsCallout>
+                <con1:ifThenElse>
+                  <con2:id>_ActionId-7400317042251854516-32275f41.158f599ffd3.-7bb4</con2:id>
+                  <con1:case>
+                    <con1:condition>
+                      <con2:xqueryText>xs:integer($varConsultaCreditoInternoResposta//*:quantidadeRestricoes) &lt;= 3</con2:xqueryText>
+                    </con1:condition>
+                    <con1:actions>
+                      <con4:log>
+                        <con2:id>_ActionId-8433403218602170875-57e364a1.158ff955133.-7e60</con2:id>
+                        <con4:logLevel>debug</con4:logLevel>
+                        <con4:expr>
+                          <con2:xqueryText>"Ate 3 restriçoes no Credito Interno."</con2:xqueryText>
+                        </con4:expr>
+                      </con4:log>
+                      <con1:ifThenElse>
+                        <con2:id>_ActionId-7400317042251854516-32275f41.158f599ffd3.-7ae2</con2:id>
+                        <con1:case>
+                          <con1:condition>
+                            <con2:xqueryText>xs:decimal($varConsultaCreditoInternoResposta//*:valorRestricao) &lt; 200</con2:xqueryText>
+                          </con1:condition>
+                          <con1:actions>
+                            <con4:log>
+                              <con2:id>_ActionId-8433403218602170875-57e364a1.158ff955133.-7e2b</con2:id>
+                              <con4:logLevel>debug</con4:logLevel>
+                              <con4:expr>
+                                <con2:xqueryText>"Somatorio do Credito Interno menor que 200."</con2:xqueryText>
+                              </con4:expr>
+                            </con4:log>
+                            <con1:assign varName="score">
+                              <con2:id>_ActionId-7400317042251854516-32275f41.158f599ffd3.-7aa3</con2:id>
+                              <con1:expr>
+                                <con2:xqueryText>500</con2:xqueryText>
+                              </con1:expr>
+                            </con1:assign>
+                          </con1:actions>
+                        </con1:case>
+                        <con1:default>
+                          <con4:log>
+                            <con2:id>_ActionId-8433403218602170875-57e364a1.158ff955133.-7e10</con2:id>
+                            <con4:logLevel>debug</con4:logLevel>
+                            <con4:expr>
+                              <con2:xqueryText>"Somatorio do Credito Interno maior ou igual a 200."</con2:xqueryText>
+                            </con4:expr>
+                          </con4:log>
+                          <con1:assign varName="varConsultaWhiteListParametro">
+                            <con2:id>_ActionId-7400317042251854516-32275f41.158f599ffd3.-7a9f</con2:id>
+                            <con1:expr>
+                              <con2:xqueryTransform>
+                                <con2:resource ref="OSB_Amaral/ServicosNegocio/Credito/Resources/Transformations/CreditoGeralParametroToVerificaWhiteListParametro"/>
+                                <con2:param name="parametrosConsultaScore">
+                                  <con2:path>$body/cred:parametrosConsultaScore</con2:path>
+                                </con2:param>
+                              </con2:xqueryTransform>
+                            </con1:expr>
+                          </con1:assign>
+                          <con1:wsCallout>
+                            <con2:id>_ActionId-7400317042251854516-32275f41.158f599ffd3.-7a9d</con2:id>
+                            <con1:service xsi:type="ref:ProxyRef" ref="OSB_Amaral/ServicosNegocio/Credito/Services/Proxies/Operations/VerificaWhiteListService" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                            <con1:operation>verificaWhiteList</con1:operation>
+                            <con1:request>
+                              <con1:body>$varConsultaWhiteListParametro</con1:body>
+                            </con1:request>
+                            <con1:response>
+                              <con1:body>varConsultaWhiteListResposta</con1:body>
+                            </con1:response>
+                            <con1:requestTransform/>
+                            <con1:responseTransform/>
+                          </con1:wsCallout>
+                          <con1:ifThenElse>
+                            <con2:id>_ActionId-7400317042251854516-32275f41.158f599ffd3.-7a7c</con2:id>
+                            <con1:case>
+                              <con1:condition>
+                                <con2:xqueryText>xs:boolean($varConsultaWhiteListResposta//*:isAtivo)</con2:xqueryText>
+                              </con1:condition>
+                              <con1:actions>
+                                <con4:log>
+                                  <con2:id>_ActionId-8433403218602170875-57e364a1.158ff955133.-7de8</con2:id>
+                                  <con4:logLevel>debug</con4:logLevel>
+                                  <con4:expr>
+                                    <con2:xqueryText>"Ativo na Whitelist."</con2:xqueryText>
+                                  </con4:expr>
+                                </con4:log>
+                                <con1:assign varName="score">
+                                  <con2:id>_ActionId-7400317042251854516-32275f41.158f599ffd3.-7a32</con2:id>
+                                  <con1:expr>
+                                    <con2:xqueryText>900</con2:xqueryText>
+                                  </con1:expr>
+                                </con1:assign>
+                              </con1:actions>
+                            </con1:case>
+                            <con1:default>
+                              <con4:log>
+                                <con2:id>_ActionId-8433403218602170875-57e364a1.158ff955133.-7dcc</con2:id>
+                                <con4:logLevel>debug</con4:logLevel>
+                                <con4:expr>
+                                  <con2:xqueryText>"Nao ativo na Whitelist."</con2:xqueryText>
+                                </con4:expr>
+                              </con4:log>
+                            </con1:default>
+                          </con1:ifThenElse>
+                        </con1:default>
+                      </con1:ifThenElse>
+                    </con1:actions>
+                  </con1:case>
+                  <con1:default>
+                    <con4:log>
+                      <con2:id>_ActionId-8433403218602170875-57e364a1.158ff955133.-7e42</con2:id>
+                      <con4:logLevel>debug</con4:logLevel>
+                      <con4:expr>
+                        <con2:xqueryText>"Mais do que 3 restricoes no Credito Interno."</con2:xqueryText>
+                      </con4:expr>
+                    </con4:log>
+                    <con1:assign varName="score">
+                      <con2:id>_ActionId-7400317042251854516-32275f41.158f599ffd3.-79f8</con2:id>
+                      <con1:expr>
+                        <con2:xqueryText>0</con2:xqueryText>
+                      </con1:expr>
+                    </con1:assign>
+                  </con1:default>
+                </con1:ifThenElse>
+              </con1:actions>
+            </con1:case>
+            <con1:default>
+              <con4:log>
+                <con2:id>_ActionId-8433403218602170875-57e364a1.158ff955133.-7e88</con2:id>
+                <con4:logLevel>debug</con4:logLevel>
+                <con4:expr>
+                  <con2:xqueryText>"Credito externo maior que 400."</con2:xqueryText>
+                </con4:expr>
+              </con4:log>
+              <con1:assign varName="score">
+                <con2:id>_ActionId-7400317042251854516-32275f41.158f599ffd3.-7f10</con2:id>
+                <con1:expr>
+                  <con2:xqueryText>200</con2:xqueryText>
+                </con1:expr>
+              </con1:assign>
+            </con1:default>
+          </con1:ifThenElse>
+        </con:actions>
+      </con:stage>
+    </con:pipeline>
+    <con:pipeline type="response" name="PipelinePairConsultaScore_response">
+      <con:stage name="stageDefinicaoResposta">
+        <con:context>
+          <con2:userNsDecl namespace="http://pucminas.br/SN/CreditoGeral" prefix="cred"/>
+        </con:context>
+        <con:actions>
+          <con1:replace varName="body" contents-only="true">
+            <con2:id>_ActionId-7400317042251854516-32275f41.158f599ffd3.-7e29</con2:id>
+            <con1:location>
+              <con2:xpathText>.</con2:xpathText>
+            </con1:location>
+            <con1:expr>
+              <con2:xqueryText>&lt;cred:resultadoConsultaScore>
+	&lt;score>{data($score)}&lt;/score>
+&lt;/cred:resultadoConsultaScore></con2:xqueryText>
+            </con1:expr>
+          </con1:replace>
+        </con:actions>
+      </con:stage>
+    </con:pipeline>
+    <con:flow>
+      <con:branch-node type="operation" name="BranchNodeCreditoGeral">
+        <con:context/>
+        <con:branch-table>
+          <con:branch name="consultaScore">
+            <con:operator>equals</con:operator>
+            <con:value/>
+            <con:flow>
+              <con:pipeline-node name="PipelinePairConsultaScore">
+                <con:request>PipelinePairConsultaScore_request</con:request>
+                <con:response>PipelinePairConsultaScore_response</con:response>
+              </con:pipeline-node>
+            </con:flow>
+          </con:branch>
+          <con:default-branch>
+            <con:flow>
+              <con:pipeline-node name="PipelinePairOperacaoInexistente">
+                <con:request>PipelinePairOperacaoInexistente_request</con:request>
+                <con:response>PipelinePairOperacaoInexistente_response</con:response>
+              </con:pipeline-node>
+            </con:flow>
+          </con:default-branch>
+        </con:branch-table>
+      </con:branch-node>
+    </con:flow>
+  </ser:router>
+</xml-fragment>

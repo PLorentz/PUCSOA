@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema 
+	xmlns="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://pucminas.br/MC/SOA/Amaral" 
+	xmlns:tns="http://pucminas.br/MC/SOA/Amaral" 
+	elementFormDefault="qualified">
+	
+	<complexType name="MensagemRetorno">
+		<sequence>
+			<element name="codigo" type="integer"></element>
+			<element name="descricao" type="string"></element>
+			<element name="isAtivo" type="boolean"></element>
+		</sequence>
+	</complexType>
+</schema>

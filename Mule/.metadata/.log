@@ -1,0 +1,86 @@
+!SESSION 2016-11-16 21:41:17.565 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.7.0_79
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY org.mule.tooling.core 2 0 2016-11-16 21:43:19.006
+!MESSAGE /home/puc/.m2/repository does not exist or contain a maven repository
+
+!ENTRY org.mule.tooling.core 2 0 2016-11-16 21:43:19.011
+!MESSAGE /home/puc/.m2/repository does not exist or contain a maven repository
+!SESSION 2016-11-16 21:48:37.089 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.7.0_79
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Command-line arguments:  -data file:/home/puc/workspace/Mule/ -os linux -ws gtk -arch x86_64
+
+!ENTRY org.mule.tooling.core 2 0 2016-11-16 21:49:03.933
+!MESSAGE /home/puc/.m2/repository does not exist or contain a maven repository
+
+!ENTRY org.mule.tooling.core 2 0 2016-11-16 21:49:03.954
+!MESSAGE /home/puc/.m2/repository does not exist or contain a maven repository
+
+!ENTRY org.eclipse.jface 2 0 2016-11-16 22:00:41.980
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2016-11-16 22:00:41.980
+!MESSAGE A conflict occurred for CTRL+F:
+Binding(CTRL+F,
+	ParameterizedCommand(Command(org.eclipse.ui.edit.findReplace,Find and Replace,
+		Find and replace text,
+		Category(org.eclipse.ui.category.edit,Edit,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@55273438,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+F,
+	ParameterizedCommand(Command(org.mule.tooling.ui.dfl.contribution.commands.searchCommand,Find/Replace,
+		Find/Replace,
+		Category(org.mule.tooling.ui.commandcategory,org.mule.tooling.ui.commandcategory,Category for menu commands,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@c3c0ff,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.mule.tooling.contexts.mulePropertiesEditor,,,system)
+Binding(CTRL+F,
+	ParameterizedCommand(Command(org.mule.tooling.commands.focusSearchCommand,Focus Search Command,
+		Focus Search in Palette,
+		Category(org.mule.tooling.ui.commandcategory,org.mule.tooling.ui.commandcategory,Category for menu commands,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@33b3a5bd,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.mule.tooling.contexts.mulePropertiesEditor,,,system)
+
+!ENTRY org.mule.tooling.core 2 0 2016-11-16 22:07:56.273
+!MESSAGE Authenticator was changed to class org.eclipse.ui.internal.net.auth.NetAuthenticator. Restoring default authenticator to null
+
+!ENTRY org.mule.tooling.core 2 0 2016-11-16 22:07:56.282
+!MESSAGE Authenticator was changed to class org.eclipse.ui.internal.net.auth.NetAuthenticator. Restoring default authenticator to null
+
+!ENTRY org.eclipse.jface 2 0 2016-11-16 22:08:06.290
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2016-11-16 22:08:06.295
+!MESSAGE A conflict occurred for CTRL+SHIFT+P:
+Binding(CTRL+SHIFT+P,
+	ParameterizedCommand(Command(org.mule.tooling.ui.exportImageCommand,Export image,
+		Export image,
+		Category(org.mule.tooling.ui.commandcategory,org.mule.tooling.ui.commandcategory,Category for menu commands,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@550654f2,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.mule.tooling.keybindings.contexts.muleStudio,,,system)
+Binding(CTRL+SHIFT+P,
+	ParameterizedCommand(Command(org.mule.tooling.ui.dfl.contribution.commands.turnOnOffPreviewCommand,Turn on/off preview,
+		Turn on/off preview,
+		Category(org.mule.tooling.ui.commandcategory,org.mule.tooling.ui.commandcategory,Category for menu commands,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@23054dad,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.mule.tooling.contexts.mulePropertiesEditor,,,system)
+
+!ENTRY org.mule.tooling.core 2 0 2016-11-16 22:08:07.805
+!MESSAGE Trying to add an extension that was already in the project: MuleExtension [name=Mongo DB, qualifier=org.mule.tooling.ui.contribution.mongo.3.6.0]
+
+!ENTRY org.mule.tooling.core 2 0 2016-11-16 22:08:07.805
+!MESSAGE Trying to add an extension that was already in the project: MuleExtension [name=Mongo DB, qualifier=org.mule.tooling.ui.contribution.mongo.3.6.0]
